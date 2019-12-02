@@ -1,0 +1,29 @@
+##################################################################################################
+##################################################################################################
+
+
+
+#ifneq ($(ARCH), "")
+
+TARGET_PATH_R :=  $(TARGET_PATH)
+LIB_PATH_R    :=  $(LIB_PATH)
+
+INCLUDES =	-I $(ROOTDIR)/app/base/scom \
+		    -I $(ROOTDIR)/app/base/uds \
+		    -I $(ROOTDIR)/app/base/uds/server \
+   	        -I $(ROOTDIR)/app/base/uds/server/foton \
+			-I $(ROOTDIR)/app/interface/hozon/asn	\
+			-I $(ROOTDIR)/app/interface/hozon/PrvtProtocol/remoteControl \
+			-I $(ROOTDIR)/app/base/ble/cm256 \
+			-I $(SDKTARGETSYSROOT)/usr/include               \
+			-I $(SDKTARGETSYSROOT)/usr/include/qmi-framework \
+	                -I $(SDKTARGETSYSROOT)/usr/include/data          \
+		        -I $(SDKTARGETSYSROOT)/usr/include/dsutils       \
+		        -I $(SDKTARGETSYSROOT)/usr/include/qmi           \
+		        -I $(SDKTARGETSYSROOT)/usr/include/qmi-framework \
+			-I $(SDKTARGETSYSROOT)/usr/include/qmi           \
+			#-I $(ROOTDIR)/app/interface/hozon/Security	\
+			#-I $(ROOTDIR)/app/interface/hozon/Security/openssl
+#endif
+
+
