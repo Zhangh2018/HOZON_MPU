@@ -1,5 +1,0 @@
----- PP_CLOSEDOOR Matches (4 in 1 files) ----
-PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) line 58 : #define PP_CLOSEDOOR 1
-SetPP_autodoorCtrl_Request in PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 					autodoor_type = PP_CLOSEDOOR;
-SetPP_autodoorCtrl_Request in PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				 	autodoor_type = PP_CLOSEDOOR;
-PP_autodoorCtrl_SetCtrlReq in PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 		autodoor_type = PP_CLOSEDOOR;
