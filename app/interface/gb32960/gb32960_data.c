@@ -1826,15 +1826,14 @@ static uint32_t gb_data_save_VSExt(gb_info_t *gbinf, uint8_t *buf)
         buf[len++] = 0xff;
     }
 
-
 	if(gbinf->gb_ConpSt.info[GB_CMPT_LHTEMP])//
-    {
-        buf[len++] = (dbc_get_signal_from_id(gb_inf->gb_ConpSt.info[GB_CMPT_LHTEMP])->value + 16) * 2;
-    }
-    else
-    {
-        buf[len++] = 0xff;
-    }
+	{
+		buf[len++] = (dbc_get_signal_from_id(gb_inf->gb_ConpSt.info[GB_CMPT_LHTEMP])->value -16) * 2;
+	}
+	else
+	{
+		buf[len++] = 0xff;
+	}
 
 	//空调模式
 	uint8_t acmode = 0xff;//无效
@@ -5406,7 +5405,7 @@ long getgb_data_LRDoorOpenSt(void)
 }
 
 /*
-* 获取左后门打开状态
+* 获取右后门打开状态
 */
 long getgb_data_RRDoorOpenSt(void)
 {
@@ -5423,21 +5422,22 @@ long getgb_data_RRDoorOpenSt(void)
 
 	return st;
 }
+
 /*
 * 主驾设置温度
 */
 long getgb_data_CLMLHTemp(void)
 {
-        long tmp = 16;
+	long tmp = 16;
 
-        DAT_LOCK();
+	DAT_LOCK();
 
-        if(gb_inf && gb_inf->gb_ConpSt.info[GB_CMPT_LHTEMP])//
-        {
-                tmp = dbc_get_signal_from_id(gb_inf->gb_ConpSt.info[GB_CMPT_LHTEMP])->value;
-        }
+	if(gb_inf && gb_inf->gb_ConpSt.info[GB_CMPT_LHTEMP])//
+	{
+		tmp = dbc_get_signal_from_id(gb_inf->gb_ConpSt.info[GB_CMPT_LHTEMP])->value;
+	}
 
-        DAT_UNLOCK();
+	DAT_UNLOCK();
 
-        return tmp;
+	return tmp;
 }
