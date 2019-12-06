@@ -1963,7 +1963,7 @@ void *ivi_check(void)
 	prctl(PR_SET_NAME, "IVI_CHECK");
 	while(1)
 	{	
-		sos_newflag = tbox_ivi_ecall_trigger();
+		sos_newflag = tbox_ivi_ecall_srs();
 		if(sos_newflag != sos_oldflag)
 		{
 			sos_oldflag = sos_newflag;
@@ -1980,6 +1980,7 @@ void *ivi_check(void)
 				log_o(LOG_IVI, "SOS trigger!!!!!");
 			}
 		}
+		tbox_ivi_ecall_key();
 		if(hu_pki_en == 0)  //不带PKI
 		{
 			if(ivi_clients[0].fd > 0)  //轮询任务：信号强度、电话状态、绑车激活、远程诊断、
@@ -2123,17 +2124,29 @@ void tbox_ivi_push_fota_informHU(uint8_t flag)
      * @param[in] void.
      * @return    uint8_t.
 */
-uint8_t tbox_ivi_ecall_trigger(void)
+uint8_t tbox_ivi_ecall_srs(void)
 {
 	uint8_t flag = 0;
-	if((dev_get_SRS_signal() != 2)&&( flt_get_by_id(SOSBTN) != 2)&&(PP_rmtCtrl_cfg_CrashOutputSt() != 1))
+	if((dev_get_SRS_signal() != 2)&&(PP_rmtCtrl_cfg_CrashOutputSt() != 1))
 	{
 		flag = 0;  //ECALL触发标志位清除
 	}
-	else if((dev_get_SRS_signal() == 2)||(2 == flt_get_by_id(SOSBTN))||(PP_rmtCtrl_cfg_CrashOutputSt() == 1))
+	else if((dev_get_SRS_signal() == 2)||(PP_rmtCtrl_cfg_CrashOutputSt() == 1))
 	{
 		flag = 1;//ECALL触发
 	}
 	return flag;
 }
-
+void tbox_ivi_ecall_key(void)
+{
+	static uint64_t lastsendtime;
+	if(tm_get_time() - lastsendtime > 800)
+	{
+		if( flt_get_by_id(SOSBTN) == 2)
+		{
+			callrequest.call_type = ECALL_YTPE;
+			callrequest.call_action = START_YTPE;
+			lastsendtime = tm_get_time();
+		}
+	}
+}
