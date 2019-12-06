@@ -930,8 +930,6 @@ void ivi_msg_response_send( int fd ,Tbox__Net__Messagetype id)
 				temp = ((double) nm_get_signal())/31*100;
 				if((temp >= 0) && (temp < 20))
 				{
-					//log_o(LOG_IVI,"power = %d",nm_get_signal());
-					//log_o(LOG_IVI,"power = %d",(double)nm_get_signal()/31*100);
 					TopMsg.signal_power = 0;
 				}
 				else if((temp >= 20) && (temp < 40))
@@ -951,8 +949,6 @@ void ivi_msg_response_send( int fd ,Tbox__Net__Messagetype id)
 					TopMsg.signal_power = 4;
 				}
             }
-
-			//TopMsg.signal_power = signalpower ;
 			log_o(LOG_IVI,"power = %d",TopMsg.signal_power);
             result.result = true;
             
@@ -1086,6 +1082,7 @@ void ivi_msg_response_send( int fd ,Tbox__Net__Messagetype id)
 			TopMsg.tbox_charge_appoointmentset = &chager;
 			break;
 		}
+
         default:
         {
 			break;
@@ -1956,31 +1953,13 @@ void *ivi_txmain(void)
 
 void *ivi_check(void)
 {
-    static uint8_t sos_newflag ;
-	static uint8_t sos_oldflag ;
 	static uint64_t lastsynctime;
 	uint8_t active_flag = 0;
 	prctl(PR_SET_NAME, "IVI_CHECK");
 	while(1)
 	{	
-		sos_newflag = tbox_ivi_ecall_srs();
-		if(sos_newflag != sos_oldflag)
-		{
-			sos_oldflag = sos_newflag;
-			if(sos_newflag == 1)
-			{
-				memset(&callrequest,0 ,sizeof(ivi_callrequest));
-				callrequest.call_type = ECALL_YTPE;
-				callrequest.call_action = START_YTPE;
-				if(ivi_clients[0].fd > 0)
-				{
-					//下发远程诊断命令
-					ivi_remotediagnos_request_send( ivi_clients[0].fd ,0);
-				}
-				log_o(LOG_IVI, "SOS trigger!!!!!");
-			}
-		}
-		tbox_ivi_ecall_key();
+		tbox_ivi_ecall_srs_deal(tbox_ivi_ecall_srs());   //安全气囊拨打ecall处理
+		tbox_ivi_ecall_key_deal(tbox_ivi_ecall_key()); 	 //按键拨打ecall处理
 		if(hu_pki_en == 0)  //不带PKI
 		{
 			if(ivi_clients[0].fd > 0)  //轮询任务：信号强度、电话状态、绑车激活、远程诊断、
@@ -2118,9 +2097,10 @@ void tbox_ivi_set_tsplogfile_InformHU(ivi_logfile *tsp)
 void tbox_ivi_push_fota_informHU(uint8_t flag)
 {
 	otaupdate_flag = 1;
+	log_o(LOG_HOZON,"fota push.....");
 }
 /**
-     * @brief    ECALL触发管理.
+     * @brief    安全气囊触发管理.
      * @param[in] void.
      * @return    uint8_t.
 */
@@ -2137,16 +2117,69 @@ uint8_t tbox_ivi_ecall_srs(void)
 	}
 	return flag;
 }
-void tbox_ivi_ecall_key(void)
+
+/**
+     * @brief    顶灯按键触发管理.
+     * @param[in] void.
+     * @return    uint8_t.
+*/
+uint8_t tbox_ivi_ecall_key(void)
 {
-	static uint64_t lastsendtime;
-	if(tm_get_time() - lastsendtime > 800)
+	uint8_t flag = 0;
+	if( flt_get_by_id(SOSBTN) != 2)
 	{
-		if( flt_get_by_id(SOSBTN) == 2)
+		flag = 0;
+	}
+	else
+	{
+		flag = 1;
+	}
+	return flag;
+}
+
+void tbox_ivi_ecall_srs_deal(uint8_t dt)
+{
+	static uint8_t srs_sos_newflag ;
+	static uint8_t srs_sos_oldflag ;
+	srs_sos_newflag = dt;
+	if(srs_sos_newflag != srs_sos_oldflag)
+	{
+		srs_sos_oldflag = srs_sos_newflag;
+		if(srs_sos_newflag == 1)
 		{
+			memset(&callrequest,0 ,sizeof(ivi_callrequest));
 			callrequest.call_type = ECALL_YTPE;
 			callrequest.call_action = START_YTPE;
-			lastsendtime = tm_get_time();
+			if((ivi_clients[0].fd > 0) || (hu_pki_en == 1))
+			{
+				//下发远程诊断命令
+				ivi_remotediagnos_request_send( ivi_clients[0].fd ,0);
+			}
+			log_o(LOG_IVI, "SOS trigger!!!!!");
 		}
 	}
 }
+void tbox_ivi_ecall_key_deal(uint8_t dt)
+{
+	static uint8_t key_sos_newflag ;
+	static uint8_t key_sos_oldflag ;
+	key_sos_newflag = dt;
+	if(key_sos_newflag != key_sos_oldflag)
+	{
+		key_sos_oldflag = key_sos_newflag;
+		if(key_sos_newflag == 1)
+		{
+			memset(&callrequest,0 ,sizeof(ivi_callrequest));
+			callrequest.call_type = ECALL_YTPE;
+			callrequest.call_action = START_YTPE;
+			if((ivi_clients[0].fd > 0) || (hu_pki_en == 1))
+			{
+				//下发远程诊断命令
+				ivi_remotediagnos_request_send( ivi_clients[0].fd ,0);
+			}
+			log_o(LOG_IVI, "SOS trigger!!!!!");
+		}
+	}
+}
+
+
