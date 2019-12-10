@@ -54,10 +54,11 @@ int tbox_ivi_hu_charge_ctrl(int argc, const char **argv)
 	FILE *fd;
 	int len ;
 	char data[50 ] = {0};
-	fd = fopen("/usrapp/current/data/image/test.txt","r");
+	fd = fopen("/usrapp/current/data/image/test.txt","rb");
 	len = fread(data,1,50,fd);
 	log_o(LOG_IVI,"%s",data);
 	http_post_msg("https://file-uat.chehezhi.cn/fileApi/1.0/pickData",data);
+	//http_post_msg("https://ptsv2.com/t/eastage/post",data);
 	return 0;
 }
 

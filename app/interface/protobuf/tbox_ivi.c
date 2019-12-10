@@ -56,6 +56,7 @@ unsigned char recv_buf[MAX_IVI_NUM][IVI_MSG_SIZE];
 static ivi_remotediagnos tspdiagnos;
 static ivi_logfile tsplogfile;
 
+static int tboxinfo_flag = 0;
 static int tspdiagnos_flag = 0;
 static int otaupdate_flag = 0;
 static int tsplogfile_flag = 0;
@@ -328,8 +329,8 @@ void ivi_msg_error_response_send( int fd ,Tbox__Net__Messagetype id,char *error_
 		}
 	}
     return;
-
 }
+
 void ivi_message_request(int fd ,Tbox__Net__Messagetype id,void *para)
 {
 	int i = 0;
@@ -352,6 +353,7 @@ void ivi_message_request(int fd ,Tbox__Net__Messagetype id,void *para)
 		case TBOX__NET__MESSAGETYPE__REQUEST_OTAUPDATE_TASK:
 		{	//	fota升级推送
 			TopMsg.message_type = TBOX__NET__MESSAGETYPE__REQUEST_OTAUPDATE_TASK;
+			log_o(LOG_HOZON,"fota push success.....");
 		}
 		break;
 		case TBOX__NET__MESSAGETYPE__REQUEST_IHU_LOGFILE:
@@ -372,7 +374,40 @@ void ivi_message_request(int fd ,Tbox__Net__Messagetype id,void *para)
 		}
 		break;
 		case TBOX__NET__MESSAGETYPE__REQUEST_TBOX_INFO:
-		{   //  TBOX信息同步	
+		{   //  TBOX信息同步	(如果第一次给车机同步iccid的时候全为0，在发一次)
+			char vin[18] = {0};
+			char iccid[21] = {0};
+			char imei[16] = {0};
+			char tboxsn[19] = {0};
+			unsigned int len;
+			Tbox__Net__TboxInfo tboxinfo;
+			tbox__net__tbox_info__init(&tboxinfo);
+			TopMsg.message_type = TBOX__NET__MESSAGETYPE__REQUEST_TBOX_INFO;
+			tboxinfo.software_version = DID_F1B0_SW_FIXED_VER;
+			char hw[32] = {0};
+    		len = sizeof(hw);
+    		cfg_get_para(CFG_ITEM_INTEST_HW,hw,&len);
+    		if(hw[0] == 0)
+    		{
+                memcpy(hw,"00.00",5);
+    		}
+			tboxinfo.hardware_version = hw;
+			if(PP_rmtCfg_getIccid((uint8_t *)iccid) == 1)
+			{
+				tboxinfo.iccid = iccid;	
+			}
+			else
+			{
+				tboxinfo.iccid  = "00000000000000000000";
+			}
+			at_get_imei(imei);
+			tboxinfo.imei = imei;
+			gb32960_getvin(vin);
+			tboxinfo.vin = vin ;
+			len = sizeof(tboxsn);
+			cfg_get_user_para(CFG_ITEM_HOZON_TSP_TBOXSN,tboxsn,&len);
+			tboxinfo.pdid = tboxsn;
+			TopMsg.tbox_info = &tboxinfo;
 		}
 		break;
 		case TBOX__NET__MESSAGETYPE__REQUEST_IHU_CHARGEAPPOINTMENTSTS:
@@ -569,6 +604,7 @@ void ivi_signalpower_response_send(int fd  )
     tbox__net__top_message__init( &TopMsg );
     tbox__net__msg_result__init( &result );
 
+	TopMsg.signal_power = signal_power;
     if( at_get_sim_status() == 2 )
     {
          TopMsg.signal_type = TBOX__NET__SIGNAL_TYPE__NONE_SIGNAL;
@@ -578,17 +614,17 @@ void ivi_signalpower_response_send(int fd  )
          if(signal_type == 0)
          {
              TopMsg.signal_type = TBOX__NET__SIGNAL_TYPE__GSM;
-			 log_o(LOG_IVI,"TYPE 2G");
+			 log_o(LOG_IVI,"net type: 2G ; signal power: %d",TopMsg.signal_power);
          }
          else if(signal_type == 2)
          {
              TopMsg.signal_type = TBOX__NET__SIGNAL_TYPE__UMTS;
-			 log_o(LOG_IVI,"TYPE 3G");
+			 log_o(LOG_IVI,"net type: 3G,signal power : %d",TopMsg.signal_power);
           }
           else if(signal_type == 7)
           {
               TopMsg.signal_type = TBOX__NET__SIGNAL_TYPE__LTE;
-			  log_o(LOG_IVI,"TYPE 4G");
+			  log_o(LOG_IVI,"net type: 4G,signal power : %d",TopMsg.signal_power);
           }
           else
           {
@@ -597,8 +633,6 @@ void ivi_signalpower_response_send(int fd  )
      }		
     TopMsg.message_type = TBOX__NET__MESSAGETYPE__RESPONSE_NETWORK_SIGNAL_STRENGTH;
     result.result = true;
-	TopMsg.signal_power = signal_power;
-	log_o(LOG_IVI,"TopMsg.signal_power = %d",TopMsg.signal_power);
     TopMsg.msg_result = &result;
     szlen = tbox__net__top_message__get_packed_size( &TopMsg );
 
@@ -1018,6 +1052,7 @@ void ivi_msg_response_send( int fd ,Tbox__Net__Messagetype id)
 			}
 			else
 			{
+				tboxinfo_flag = 1;
 				tboxinfo.iccid  = "00000000000000000000";
 			}
 			//获取SIM卡IMEI
@@ -1994,6 +2029,15 @@ void *ivi_check(void)
 					tspdiagnos_flag = 0;
 					ivi_remotediagnos_request_send( ivi_clients[0].fd ,1);
 				}
+				if(tboxinfo_flag == 1)
+				{
+					char iccid[21] = {0};
+					if(PP_rmtCfg_getIccid((uint8_t *)iccid) == 1)
+					{
+						ivi_message_request( ivi_clients[0].fd,TBOX__NET__MESSAGETYPE__REQUEST_TBOX_INFO,NULL);
+						tboxinfo_flag = 0;
+					}
+				}
 			}
 		}
 		else  //带PKI
@@ -2025,6 +2069,15 @@ void *ivi_check(void)
 				{
 					tspdiagnos_flag = 0;
 					ivi_remotediagnos_request_send( ivi_clients[0].fd ,1);
+				}
+				if(tboxinfo_flag == 1)
+				{
+					char iccid[21] = {0};
+					if(PP_rmtCfg_getIccid((uint8_t *)iccid) == 1)
+					{
+						ivi_message_request( ivi_clients[0].fd,TBOX__NET__MESSAGETYPE__REQUEST_TBOX_INFO,NULL);
+						tboxinfo_flag = 0;
+					}
 				}
 			}
 		}

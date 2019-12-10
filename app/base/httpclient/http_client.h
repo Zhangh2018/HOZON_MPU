@@ -108,7 +108,9 @@ enum http_error_e
 #define ACCEPT_STR "Accept: */*\r\n"
 #define CONTENT_LENGTH_STR "Content-Length"
 //#define CONTENT_TYPE_STR "Content-Type: application/x-www-form-urlencoded\r\n"
-#define CONTENT_TYPE_STR "Content-Type: application/json\r\n"
+#define CONTENT_TYPE_STR "Content-Type: multipart/form-data\r\n"
+//#define CONTENT_TYPE_STR "Content-Type: form-data\r\n"
+
 
 #define CONTENT_DISPOSITION_STR "Content-Disposition"
 #define CRLF "\r\n"
