@@ -1,0 +1,4 @@
+---- IVI MSG Matches (3 in 1 files) ----
+ivi_msg_error_response_send in tbox_ivi.c (app\interface\protobuf) : 	        log_e(LOG_IVI, "ivi msg error send response failed!!!");
+ivi_msg_error_response_send in tbox_ivi.c (app\interface\protobuf) : 	        log_i(LOG_IVI, "ivi msg error send response success");
+ivi_msg_request_process in tbox_ivi.c (app\interface\protobuf) :     log_buf_dump(LOG_IVI, "IVI MSG", (const uint8_t *)data, len);

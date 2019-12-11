@@ -26,7 +26,7 @@ static QL_MCM_NW_REG_STATUS_INFO_T	base_info;
 
 extern int PP_identificat_rcvdata(uint8_t *dt);
 gb32960_api_fault_t gb_fault;
-
+static gb_PackPerSecond_t  gb_PPS;
 #define GB_EXT	1//���������չ��Ϣ
 
 #define GB_MAX_PACK_CELL    800
@@ -809,11 +809,11 @@ static void gb_data_eventReport(gb_info_t *gbinf,  uint32_t uptime)
 				if(gbinf->event.oldst[i] == 0)
 				{
 					gbinf->event.triflg = 1;
+					gbinf->event.oldst[i] = gbinf->event.newst[i];
+					(*eventcnt_ptr) += 1;
+					buf[len++] = gb_eventCode[i].code >> 8;
+					buf[len++] = gb_eventCode[i].code;
 				}
-				gbinf->event.oldst[i] = gbinf->event.newst[i];
-				(*eventcnt_ptr) += 1;
-				buf[len++] = gb_eventCode[i].code >> 8;
-				buf[len++] = gb_eventCode[i].code;
 			}
 			else 
 			{
@@ -1771,25 +1771,18 @@ static uint32_t gb_data_save_VSExt(gb_info_t *gbinf, uint8_t *buf)
     {
         if(gbinf->event.info[GB_EVT_LEFTDRVDOOR_OPEN+i])
         {
-            if(2 == dbc_get_signal_from_id(gbinf->event.info[GB_EVT_LEFTDRVDOOR_OPEN+i])->value)//��
+            if(dbc_get_signal_from_id(gbinf->event.info[GB_EVT_LEFTDRVDOOR_OPEN+i])->value)//��
             {
                 buf[len++] = 1;
-                gbinf->gb_VSExt.oldst[GB_VS_DRIDOORST+i]  = 1;
-            }
-            else if(0 == dbc_get_signal_from_id(gbinf->event.info[GB_EVT_LEFTDRVDOOR_OPEN])->value)//��
-            {
-            	 buf[len++] = 0;
-            	 gbinf->gb_VSExt.oldst[GB_VS_DRIDOORST+i]  = 0;
             }
             else
             {
-            	buf[len++] = gbinf->gb_VSExt.oldst[GB_VS_DRIDOORST+i];
+            	buf[len++] = 0;
             }
         }
         else
         {
             buf[len++] = 0xff;
-            gbinf->gb_VSExt.oldst[GB_VS_DRIDOORST+i]  = 0xff;
         }
     }
 
@@ -4172,6 +4165,11 @@ static void gb_data_periodic(gb_info_t *gbinf, int intv, uint32_t uptime)
             gb_data_flush_error();
         }
     }
+
+	DAT_LOCK();
+	gb_PPS.len = gb_data_save_all(gbinf, gb_PPS.data, uptime);
+	gb_PPS.flag = 1;
+	DAT_UNLOCK();
 }
 
 static int gb_data_can_cb(uint32_t event, uint32_t arg1, uint32_t arg2)
@@ -4350,6 +4348,7 @@ int gb_data_init(INIT_PHASE phase)
             gb_inf = NULL;
             gb_errlst_head = NULL;
             gb_datintv = 10;
+			memset(&gb_PPS,0,sizeof(gb_PackPerSecond_t));
             break;
 
         case INIT_PHASE_RESTORE:
@@ -5440,4 +5439,35 @@ long getgb_data_CLMLHTemp(void)
 	DAT_UNLOCK();
 
 	return tmp;
+}
+
+/*
+* 每秒国标实时数据有效性
+*/
+uint8_t gb_data_perPackValid(void)
+{
+	DAT_LOCK();
+	return gb_PPS.flag;
+	DAT_UNLOCK();
+}
+
+/*
+* 读取每秒国标实时数据
+*/
+uint8_t gb_data_perPack(uint8_t *data,int *len)
+{
+	int i;
+
+	DAT_LOCK();
+
+	for(i = 0;i < gb_PPS.len;i++)
+	{
+		data[i] = gb_PPS.data[i];
+	}
+	*len = gb_PPS.len;
+	gb_PPS.flag = 0;
+
+	DAT_UNLOCK();
+
+	return 0;
 }

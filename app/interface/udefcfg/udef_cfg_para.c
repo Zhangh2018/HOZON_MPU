@@ -411,14 +411,21 @@ int clbt_cfg_dump_para(void )
 
     memset(plbuff, 0, sizeof(plbuff));
     bufftp = plbuff;
-    BleGetMac((uint8_t*)plbuff);
-    shellprintf(" %-32s :","bluetooth mac");
-    for(k = 0; k < 6; k++)
-    {	
-        shellprintf("%x",*bufftp);
-        bufftp++;
+    if(0 == BleGetMac((uint8_t*)plbuff))
+    {
+        shellprintf(" %-32s :","bluetooth mac");
+        for(k = 0; k < 6; k++)
+        {	
+            shellprintf("_%x",*bufftp);
+            bufftp++;
+        }
+        shellprintf("\r\n");
     }
-    shellprintf("\r\n");
+    else
+    {
+        port = 0;
+        shellprintf(" %-32s : %u\r\n", "bluetooth mac", port);
+    }
 
     char cipherbuff[1024] = {0};
     bufftp = cipherbuff;
@@ -427,7 +434,7 @@ int clbt_cfg_dump_para(void )
     shellprintf(" %-32s :","cipher");
     for(k = 0; k < len; k++)
     {	
-        shellprintf("%u",*bufftp);
+        shellprintf("_%u",*bufftp);
         bufftp++;
     }
     shellprintf("\r\n");

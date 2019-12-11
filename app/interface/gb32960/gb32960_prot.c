@@ -1555,10 +1555,10 @@ static void *gb_main(void)
         res = gb_do_checksock(&state) ||	//检查连接
               gb_do_receive(&state)   ||	//socket 接收
               gb_do_wait(&state)      ||	//等待
+              gb_do_caltime(&state)   ||    //校时
               gb_do_login(&state)     ||	//登入
               gb_do_suspend(&state)   ||	//暂停
               gb_do_report(&state)    ||	//发实时数据
-              gb_do_caltime(&state)   ||    //校时
               gb_do_logout(&state);			//登出
     }
 
@@ -1982,4 +1982,27 @@ int gb32960_gbLogoutSt(void)
 	}
 
 	return 0;
+}
+
+/*
+* 读取国标每秒实时数据（整包数据：包含协议头和数据、校验位）
+*/
+uint8_t gb_data_perReportPack(uint8_t *data,int *len)
+{
+    int length;
+    if(1 == gb_data_perPackValid())
+    {
+        *len = gb_pack_head(0x02, 0xfe, data);
+        /* report data */
+        gb_data_perPack(data + (*len) + 2,&length);
+        /* data length */
+        data[(*len)++] = length >> 8;
+        data[(*len)++] = length;
+        *len = *len + length;
+        /* check sum */
+        data[*len] = gb_checksum(data + 2, *len - 2);
+        return 1;
+    }
+
+    return 0;
 }

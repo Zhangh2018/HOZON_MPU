@@ -687,7 +687,6 @@ int SetPP_ChargeCtrl_Request(char ctrlstyle,void *appdatarmtCtrl,void *disptrBod
 
 				PP_rmtCharge_AppointBook.rvcReqType = PP_COMAND_CANCELAPPOINTCHARGE;
 				PP_rmtCharge_AppointBook.id = ivi_chargeAppointSt_ptr->id;
-				log_o(LOG_HOZON,"ivi_chargeAppointSt_ptr->id = %d",ivi_chargeAppointSt_ptr->id);
 				PP_rmtCharge_AppointBook.hour = ivi_chargeAppointSt_ptr->hour;
 				PP_rmtCharge_AppointBook.min = ivi_chargeAppointSt_ptr->min;
 				PP_rmtCharge_AppointBook.targetSOC = ivi_chargeAppointSt_ptr->targetpower;

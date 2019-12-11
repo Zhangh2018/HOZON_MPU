@@ -803,6 +803,7 @@ static int http_internal_sync_request(ft_http_client_t* http, const char* url,
 		return (http->error_code = ERR_URL_INVALID);
 	}
 
+
 	r = http_connect_host(http, url, &u);
 	if(r != ERR_OK)
 	{

@@ -63,6 +63,7 @@ description�� include the header file
 #include "PrvtProt_VehiInfo.h"
 #include "PrvtProt_lock.h"
 #include "../../base/uds/server/uds_did.h"
+#include "FileUpload/PrvtProt_FileUpload.h"
 #include "PrvtProt.h"
 
 /*******************************************************
@@ -187,7 +188,7 @@ int PrvtProt_init(INIT_PHASE phase)
 			ret |= cfg_get_user_para(CFG_ITEM_HOZON_TSP_TBOXSN,pp_tboxsn,&cfglen);
 
 			PrvtProt_shell_init();
-			//PP_ntp_Init();
+			PP_ntp_Init();
 			for(obj = 0;obj < PP_RMTFUNC_MAX;obj++)
 			{
 				if(PP_RmtFunc[obj].Init != NULL)
@@ -204,6 +205,7 @@ int PrvtProt_init(INIT_PHASE phase)
 			PP_heartbeat.period = hbtimeout;
 			InitPP_VehiInfo_Parameter();
 		  	InitPP_lock_parameter();
+			InitPP_FileUpload_Parameter();
 		}
         break;
     }
@@ -240,7 +242,8 @@ int PrvtProt_run(void)
         return ret;
     }
 
-	//PP_ntp_run();
+	PP_ntp_run();
+	//PP_FileUpload_run();
 #else
 	res = 	PrvtPro_do_rcvMsg(&pp_task) ||
 			PrvtPro_do_wait(&pp_task) || 

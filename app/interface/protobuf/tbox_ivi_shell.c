@@ -49,7 +49,6 @@ int tbox_ivi_hu_charge_ctrl(int argc, const char **argv)
 	chargectrl.id = 0;
 	chargectrl.targetpower = 90;
 	PP_rmtCtrl_HuCtrlReq(PP_RMTCTRL_CHARGE,(void *)&chargectrl);
-	#endif
 	//tbox_ivi_push_fota_informHU(0);
 	FILE *fd;
 	int len ;
@@ -59,6 +58,7 @@ int tbox_ivi_hu_charge_ctrl(int argc, const char **argv)
 	log_o(LOG_IVI,"%s",data);
 	http_post_msg("https://file-uat.chehezhi.cn/fileApi/1.0/pickData",data);
 	//http_post_msg("https://ptsv2.com/t/eastage/post",data);
+	#endif
 	return 0;
 }
 

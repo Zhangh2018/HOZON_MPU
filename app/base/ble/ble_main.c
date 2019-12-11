@@ -730,8 +730,6 @@ static void *ble_main(void)
 						{
 						    if (APPLICATION_HEADER__MESSAGE_TYPE__SECURITY_FUNC_RESPONSE == g_hz_protocol.hz_send.msg_type)
 						    {
-						        memset(g_stBt_Data.aucTxPack, 1 ,sizeof(g_stBt_Data.aucTxPack));
-								g_stBt_Data.ulTxLen = 3;
 						    	stBtApi.Send(g_stBt_Data.aucTxPack, &g_stBt_Data.ulTxLen);
 						    }
 							else if (APPLICATION_HEADER__MESSAGE_TYPE__ACK == g_hz_protocol.hz_send.msg_type) 
