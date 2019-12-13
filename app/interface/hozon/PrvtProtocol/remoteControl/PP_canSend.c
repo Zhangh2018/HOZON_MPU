@@ -248,7 +248,8 @@ void PP_can_send_cycle(void)
 			{
 				PP_can_unpack(old_ID440_data,can_data);
 				PP_send_cycle_ID440_to_mcu(can_data);
-				usleep(10);	
+				usleep(10);
+	
 			}
 			sync_flag_440 = 0;
 			pthread_mutex_unlock(&sync_mutex_440);
@@ -261,7 +262,7 @@ void PP_can_send_cycle(void)
 			{
 				PP_can_unpack(old_ID445_data,can_data);
 				PP_send_cycle_ID445_to_mcu(can_data);
-				usleep(10);
+				usleep(10);
 			}
 			sync_flag_445 = 0;
 			pthread_mutex_unlock(&sync_mutex_445);

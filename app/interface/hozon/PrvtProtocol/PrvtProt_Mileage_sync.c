@@ -43,6 +43,7 @@ static uint32_t old_mileage;
 static uint32_t new_mileage;
 uint8_t data[8] = {0};
 
+
 void PP_Mileagesync_init(void)
 {
 	uint32_t len = 4;
@@ -54,6 +55,7 @@ void PP_Mileagesync_init(void)
 	}
 	log_o(LOG_HOZON,"get mileage = %d from tbox",new_mileage);
 }
+
 
 int PP_Mileagesync_mainfunction(void *task)
 {
