@@ -1,4 +1,87 @@
----- IVI MSG Matches (3 in 1 files) ----
-ivi_msg_error_response_send in tbox_ivi.c (app\interface\protobuf) : 	        log_e(LOG_IVI, "ivi msg error send response failed!!!");
-ivi_msg_error_response_send in tbox_ivi.c (app\interface\protobuf) : 	        log_i(LOG_IVI, "ivi msg error send response success");
-ivi_msg_request_process in tbox_ivi.c (app\interface\protobuf) :     log_buf_dump(LOG_IVI, "IVI MSG", (const uint8_t *)data, len);
+---- PP_can_send_data Matches (86 in 15 files) ----
+PP_ACCtrl_mainfunction in PP_ACCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_ACCTRL,CAN_OPENACC,0);
+PP_ACCtrl_mainfunction in PP_ACCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_ACCTRL,CAN_CLOSEACC,0);
+PP_ACCtrl_mainfunction in PP_ACCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_ACCTRL,CAN_SETACCTEP,(temp-16)*2); 
+PP_ACCtrl_mainfunction in PP_ACCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_ACCTRL,CAN_OPNEACCFIAL,0);  
+PP_ACCtrl_mainfunction in PP_ACCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_ACCTRL,CAN_ACCMD_INVAILD,0);
+PP_ACCtrl_mainfunction in PP_ACCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_ACCTRL,CAN_CLOSEACCCLEAN,0);
+PP_ACCtrl_mainfunction in PP_ACCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						//PP_can_send_data(PP_CAN_ACCTRL,CAN_CLOSEACC,0);  
+PP_ACCtrl_mainfunction in PP_ACCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_ACCTRL,CAN_CLOSEACCCLEAN,0);
+PP_autodoorCtrl_mainfunction in PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_AUTODOOR,CAN_OPENAUTODOOR,0);	
+PP_autodoorCtrl_mainfunction in PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_AUTODOOR,CAN_CLOSEAUTODOOR,0);
+PP_autodoorCtrl_mainfunction in PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_AUTODOOR,CAN_CLEANAUTODOOR,0);
+PP_autodoorCtrl_mainfunction in PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_AUTODOOR,CAN_CLEANAUTODOOR,0);
+PP_autodoorCtrl_mainfunction in PP_autodoorCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 					PP_can_send_data(PP_CAN_AUTODOOR,CAN_CLEANAUTODOOR,0);
+PP_bluetoothstart_mainfunction in PP_bluetoothStart.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_BLUESTART,CAN_BLUESTART,0);
+PP_bluetoothstart_mainfunction in PP_bluetoothStart.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_BLUESTART,CAN_BLUECLEAN,0);
+PP_bluetoothstart_mainfunction in PP_bluetoothStart.c (app\interface\hozon\PrvtProtocol\remoteControl) : 					PP_can_send_data(PP_CAN_BLUESTART,CAN_BLUECLEAN,0);
+PP_canSend.c (app\interface\hozon\PrvtProtocol\remoteControl) line 271 : void PP_can_send_data(int type,uint8_t data,uint8_t para)
+PP_canSend.h (app\interface\hozon\PrvtProtocol\remoteControl) line 126 : extern void PP_can_send_data(int type,uint8_t data,uint8_t para);
+PP_ChargeCtrl_init in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 		PP_can_send_data(PP_CAN_CHAGER,CAN_SETAPPOINT,0);//有效充电预约，将预约充电使能位置起
+PP_ChargeCtrl_mainfunction in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_CHAGER,CAN_STARTCHAGER,0);
+PP_ChargeCtrl_mainfunction in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 					PP_can_send_data(PP_CAN_CHAGER,CAN_SETAPPOINT,0);
+PP_ChargeCtrl_mainfunction in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_CHAGER,CAN_STOPCHAGER,0);
+PP_ChargeCtrl_mainfunction in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_CHAGER,CAN_CLEANCHARGE,0); //
+PP_ChargeCtrl_mainfunction in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_CHAGER,CAN_CANCELAPPOINT,0);//如果充电超时
+PP_ChargeCtrl_mainfunction in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_CHAGER,CAN_CLEANCHARGE,0); //
+PP_ChargeCtrl_mainfunction in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_CHAGER,CAN_CLEANCHARGE,0);
+PP_ChargeCtrl_chargeStMonitor in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 			PP_can_send_data(PP_CAN_CHAGER,CAN_CANCELAPPOINT,0);  //去使能
+PP_ChargeCtrl_chargeStMonitor in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_CHAGER,CAN_CANCELAPPOINT,0);  //有开启立即充电，先把预约使能抑制
+PP_ChargeCtrl_chargeStMonitor in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 					PP_can_send_data(PP_CAN_CHAGER,CAN_SETAPPOINT,0);
+PP_ChargeCtrl_chargeStMonitor in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 		PP_can_send_data(PP_CAN_CHAGER,CAN_CANCELAPPOINT,0);
+SetPP_ChargeCtrl_Request in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_CHAGER,CAN_SETAPPOINT,0);
+SetPP_ChargeCtrl_Request in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_CHAGER,CAN_CANCELAPPOINT,0);
+SetPP_ChargeCtrl_Request in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_CHAGER,CAN_SETAPPOINT,0);
+SetPP_ChargeCtrl_Request in PP_ChargeCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_CHAGER,CAN_CANCELAPPOINT,0);
+PP_doorLockCtrl_mainfunction in PP_doorLockCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_DOORLOCK,CAN_OPENDOOR,0);
+PP_doorLockCtrl_mainfunction in PP_doorLockCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_DOORLOCK,CAN_CLOSEDOOR,0); 
+PP_doorLockCtrl_mainfunction in PP_doorLockCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 			       			PP_can_send_data(PP_CAN_DOORLOCK,CAN_CLEANDOOR,0); //清除开门标志位
+PP_doorLockCtrl_mainfunction in PP_doorLockCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 			       			 PP_can_send_data(PP_CAN_DOORLOCK,CAN_CLEANDOOR,0); ////清除锁门标志位
+PP_doorLockCtrl_mainfunction in PP_doorLockCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				     PP_can_send_data(PP_CAN_DOORLOCK,CAN_CLEANDOOR,0);
+PP_searchvehicle_mainfunction in PP_searchvehicle.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_SEARCH,CAN_SEARCHVEHICLE,0);
+PP_searchvehicle_mainfunction in PP_searchvehicle.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_SEARCH,CAN_CLEANSEARCH,0);
+PP_searchvehicle_mainfunction in PP_searchvehicle.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_SEARCH,CAN_CLEANSEARCH,0);
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_SEATHEAT,PP_rmtseatheatCtrl[i].level + 1,CAN_SEATHEATMAIN);
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_SEATHEAT,PP_rmtseatheatCtrl[i].level + 1,CAN_SEATHEATPASS);
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_SEATHEAT, 1,CAN_SEATHEATMAIN);
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_SEATHEAT, 1,CAN_SEATHEATPASS);
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				      		  	 PP_can_send_data(PP_CAN_SEATHEAT,CAN_NOREQSEAT,CAN_SEATHEATMAIN);//
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							 	 PP_can_send_data(PP_CAN_SEATHEAT,CAN_NOREQSEAT,CAN_SEATHEATPASS);//
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				      		  	    PP_can_send_data(PP_CAN_SEATHEAT,CAN_NOREQSEAT,CAN_SEATHEATMAIN);//
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							 	    PP_can_send_data(PP_CAN_SEATHEAT,CAN_NOREQSEAT,CAN_SEATHEATPASS);//
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				      		PP_can_send_data(PP_CAN_SEATHEAT,CAN_NOREQSEAT,CAN_SEATHEATMAIN);//
+PP_seatheating_mainfunction in PP_SeatHeating.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_SEATHEAT,CAN_NOREQSEAT,CAN_SEATHEATPASS);//
+PP_startengine_mainfunction in PP_StartEngine.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_ENGINE,CAN_STARTENGINE,0);
+PP_startengine_mainfunction in PP_StartEngine.c (app\interface\hozon\PrvtProtocol\remoteControl) : 					PP_can_send_data(PP_CAN_ENGINE,CAN_CLOSEENGINE,0);
+PP_startengine_mainfunction in PP_StartEngine.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_ENGINE,CAN_ENGINECLEAN,0);
+PP_startengine_mainfunction in PP_StartEngine.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_ENGINE,CAN_ENGINECLEAN,0); //将下高压电报文清零
+PP_startengine_mainfunction in PP_StartEngine.c (app\interface\hozon\PrvtProtocol\remoteControl) : 					PP_can_send_data(PP_CAN_ENGINE,CAN_ENGINECLEAN,0);  
+PP_startforbid_mainfunction in PP_StartForbid.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_FORBID,CAN_STARTFORBID,0) ;
+PP_startforbid_mainfunction in PP_StartForbid.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_FORBID,CAN_NOFORBID,0) ;
+PP_startforbid_mainfunction in PP_StartForbid.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_FORBID,CAN_FORBIDCLEAN,0) ;
+PP_startforbid_mainfunction in PP_StartForbid.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							PP_can_send_data(PP_CAN_FORBID,CAN_FORBIDCLEAN,0) ;
+PP_startforbid_mainfunction in PP_StartForbid.c (app\interface\hozon\PrvtProtocol\remoteControl) : 					PP_can_send_data(PP_CAN_FORBID,CAN_FORBIDCLEAN,0) ;
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_SUNROOF,CAN_SUNROOFOPEN,0);
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_SUNSHADE,CAN_SUNSHADECLOSE,0);  //遮阳帘关闭
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_SUNROOF,CAN_SUNROOFUP,0);
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_SUNROOF,CAN_SUNROOFSTOP,0);
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_SUNSHADE,CAN_SUNSHADECLEAN,0);
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 				PP_can_send_data(PP_CAN_SUNROOF,CAN_SUNROOFCLEAN,0);
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							//PP_can_send_data(PP_CAN_SUNROOF,CAN_SUNROOFCLEAN,0);
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_SUNROOF,CAN_SUNROOFCLEAN,0);
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							//PP_can_send_data(PP_CAN_SUNSHADE,CAN_SUNSHADECLEAN,0);  //遮阳帘
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_SUNSHADE,CAN_SUNSHADECLEAN,0);  //遮阳帘
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 							//PP_can_send_data(PP_CAN_SUNROOF,CAN_SUNROOFCLEAN,0);
+PP_sunroofctrl_mainfunction in PP_sunroofCtrl.c (app\interface\hozon\PrvtProtocol\remoteControl) : 						PP_can_send_data(PP_CAN_SUNROOF,CAN_SUNROOFCLEAN,0);
+PrvtProt_CC_Dial_Hang in PrvtProt_callCenter.c (app\interface\hozon\PrvtProtocol) : 						PP_can_send_data(PP_CAN_SOS,CAN_SOSON,0);
+PrvtProt_CC_mainfunction in PrvtProt_callCenter.c (app\interface\hozon\PrvtProtocol) : 			PP_can_send_data(PP_CAN_SOS,CAN_SOSOFF,0);
+wrsv_mode_in in wsrv.c (app\interface\wsrv) :     PP_can_send_data(PP_CAN_OTAREQ, 0x02, 0);
+wrsv_mode_out in wsrv.c (app\interface\wsrv) :     PP_can_send_data(PP_CAN_OTAREQ, 0x01, 0);
+process_cmd in wsrv_http.c (app\interface\wsrv) :                 PP_can_send_data(PP_CAN_OTAREQ, 0x02, 0);
+process_cmd in wsrv_http.c (app\interface\wsrv) :                     PP_can_send_data(PP_CAN_OTAREQ, 0x00, 0);
+process_cmd in wsrv_http.c (app\interface\wsrv) :                     PP_can_send_data(PP_CAN_OTAREQ, 0x00, 0);
+process_cmd in wsrv_http.c (app\interface\wsrv) :                     PP_can_send_data(PP_CAN_OTAREQ, 0x00, 0);
+process_cmd in wsrv_http.c (app\interface\wsrv) :                 PP_can_send_data(PP_CAN_OTAREQ, 0x01, 0);
+process_cmd in wsrv_http.c (app\interface\wsrv) :                     PP_can_send_data(PP_CAN_OTAREQ, 0x00, 0);
+process_cmd in wsrv_http.c (app\interface\wsrv) :                     PP_can_send_data(PP_CAN_OTAREQ, 0x00, 0);
+process_cmd in wsrv_http.c (app\interface\wsrv) :                     PP_can_send_data(PP_CAN_OTAREQ, 0x00, 0);

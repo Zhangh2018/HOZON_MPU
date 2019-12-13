@@ -50,6 +50,7 @@ int tbox_ivi_hu_charge_ctrl(int argc, const char **argv)
 	chargectrl.targetpower = 90;
 	PP_rmtCtrl_HuCtrlReq(PP_RMTCTRL_CHARGE,(void *)&chargectrl);
 	//tbox_ivi_push_fota_informHU(0);
+	
 	FILE *fd;
 	int len ;
 	char data[50 ] = {0};

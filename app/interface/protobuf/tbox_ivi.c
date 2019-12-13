@@ -1117,7 +1117,6 @@ void ivi_msg_response_send( int fd ,Tbox__Net__Messagetype id)
 			TopMsg.tbox_charge_appoointmentset = &chager;
 			break;
 		}
-
         default:
         {
 			break;
@@ -1659,8 +1658,8 @@ void *ivi_main(void)
 	struct sockaddr_in cli_addr;
 	int new_conn_fd = -1;
 	struct timeval timeout;
-	timeout.tv_sec = 1;
-	timeout.tv_usec = 0;
+	//timeout.tv_sec = 1;
+	//timeout.tv_usec = 0;
 	FD_ZERO(&read_set);
 	memset(&cli_addr, 0, sizeof(cli_addr));
 	tcom_fd = tcom_get_read_fd(MPU_MID_IVI);
@@ -1686,6 +1685,8 @@ void *ivi_main(void)
 
     while (1)
     {
+    	timeout.tv_sec = 1;
+		timeout.tv_usec = 0;
 		if(hu_pki_en == 0)	
 		{
 	    	FD_ZERO(&read_set);
